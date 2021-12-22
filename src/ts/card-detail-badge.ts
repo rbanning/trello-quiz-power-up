@@ -1,26 +1,15 @@
 import { AboutPage } from "./about-page";
-import { SettingsService } from "./settings.service";
+import { ISettings, SettingsService } from "./settings.service";
 import { trello } from "./_common";
 
 export namespace CardDetailBadge {
 
-  const doYouLoveMe = (t) => {
-    t.popup({
-      type: 'confirm',
-      title: 'Do You Love Me?',
-      message: 'So, what do you think?',
-      confirmText: 'Love You',
-      confirmStyle: 'primary',
-      onConfirm: (tt) => { console.log("LOVE"); tt.closePopup(); },
-      cancelText: 'NOT',
-      onCancel: (tt) => { console.log("NOT"); tt.closePopup(); }
-    });
-  };
 
-  const whatsYourName = (t) => {
-    t.member('id', 'fullName', 'username')
+  const answerQuiz = (card) => {
+    return (t) => {
+      t.member('id', 'fullname', 'username')
       .then((member) => {
-        console.log("DEBUG: member information", {member});
+        console.log("DEBUG: answer quiz information", {card, member});
         const tt = trello.t();
         tt.popup({
           type: 'confirm',
@@ -33,6 +22,7 @@ export namespace CardDetailBadge {
           onCancel: (tt) => { console.log("NO"); tt.closePopup(); }
         });
       });
+    };
   };
 
 
@@ -42,9 +32,9 @@ export namespace CardDetailBadge {
 
     return trello.Promise.all([
         settingsService.get(t),
-        t.card('id')      
+        t.card('id', 'name', 'desc')      
       ]) 
-      .then(([settings, card]) => {
+      .then(([settings, card]: [ISettings, any]) => {
 
         //VALIDATION
         if (!settings) {
@@ -58,22 +48,10 @@ export namespace CardDetailBadge {
 
         const result = [
           {
-            title: 'About',
-            text: 'Card Details',
+            title: settings.quiz_name || 'Untitled Quiz',
+            text: 'Answer Question',
             color: 'sky',
-            callback: AboutPage.showAboutCard 
-          },
-          {
-            title: 'Test',
-            text: 'Popup Test 1',
-            color: 'lime',
-            callback: doYouLoveMe
-          },
-          {
-            title: 'Test',
-            text: 'Popup Test 2',
-            color: 'lime',
-            callback: whatsYourName
+            callback: answerQuiz(card)
           }
         ];
 

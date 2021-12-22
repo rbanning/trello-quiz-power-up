@@ -1,9 +1,9 @@
 {
-  "name": "trello-current-time-power-up",
+  "name": "trello-quiz-power-up",
   "version": "1.0.0",
-  "description": "Trello Power Up that shows the current time for a card's location",
+  "description": "Trello Power Up that manages a simple multiple choice quiz based on questions from a cards description",
   "main": "index.js",
-  "repository": "https://github.com/rbanning/trello-base-power-up.git",
+  "repository": "https://github.com/rbanning/trello-quiz-power-up.git",
   "author": "rbanning <rob@myhallpass.com>",
   "license": "MIT",
   "private": true,
