@@ -1,0 +1,6 @@
+#Simple Git Ignore
+node_modules/
+dist/
+.cache/
+src/js
+
