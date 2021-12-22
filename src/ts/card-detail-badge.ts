@@ -1,28 +1,22 @@
-import { AboutPage } from "./about-page";
 import { ISettings, SettingsService } from "./settings.service";
-import { trello } from "./_common";
+import { env, trello } from "./_common";
 
 export namespace CardDetailBadge {
 
 
-  const answerQuiz = (card) => {
-    return (t) => {
-      t.member('id', 'fullName', 'username', 'avatar')
+  const showQuizAnswerPromptModal = (t) => {
+    t.modal({
+      url: './answer-quiz-modal.html',
+      fullscreen: false,
+      title: 'Answer Question',
+      accentColor: env.accentColor,
+      height: 500
+    });
+    t.member('id', 'fullName', 'username', 'avatar')
       .then((member) => {
-        console.log("DEBUG: answer quiz information", {card, member});
-        const tt = trello.t();
-        tt.popup({
-          type: 'confirm',
-          title: 'What is your name?',
-          message: `Is your name: ${member.fullName}?`,
-          confirmText: 'Yes, it is',
-          confirmStyle: 'primary',
-          onConfirm: (tt) => { console.log("YES"); tt.closePopup(); },
-          cancelText: 'No, it is not',
-          onCancel: (tt) => { console.log("NO"); tt.closePopup(); }
-        });
+        console.log("DEBUG: answer quiz information", {member});
+        
       });
-    };
   };
 
 
@@ -51,7 +45,7 @@ export namespace CardDetailBadge {
             title: settings.quiz_name || 'Untitled Quiz',
             text: 'Answer Question',
             color: 'sky',
-            callback: answerQuiz(card)
+            callback: showQuizAnswerPromptModal
           }
         ];
 
