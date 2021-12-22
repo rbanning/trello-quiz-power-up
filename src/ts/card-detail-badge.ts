@@ -7,7 +7,7 @@ export namespace CardDetailBadge {
 
   const answerQuiz = (card) => {
     return (t) => {
-      t.member('id', 'fullname', 'username')
+      t.member('id', 'fullName', 'username', 'avatar')
       .then((member) => {
         console.log("DEBUG: answer quiz information", {card, member});
         const tt = trello.t();
