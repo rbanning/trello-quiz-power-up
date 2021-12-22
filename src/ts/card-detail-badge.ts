@@ -12,11 +12,6 @@ export namespace CardDetailBadge {
       accentColor: env.accentColor,
       height: 500
     });
-    t.member('id', 'fullName', 'username', 'avatar')
-      .then((member) => {
-        console.log("DEBUG: answer quiz information", {member});
-        
-      });
   };
 
 

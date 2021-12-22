@@ -2,6 +2,7 @@ import { LoadingService } from "./loading.service";
 import { trello } from "./_common";
 import { DateHelper } from "./date-helper";
 import { MemberComponent } from "./member.component";
+import { Question } from "./quiz.model";
 
 const t = trello.t();
 const loading = new LoadingService();
@@ -57,7 +58,8 @@ t.render(() => {
       const subtitle = window.document.getElementById('subtitle');
       subtitle.innerHTML = card.name;
 
-      console.log("DEBUG: quiz answer details", {member, card});
+      const question = Question.Parse(card.desc);
+      console.log("DEBUG: quiz answer details", {member, card, question});
 
       //get content element
       const content = window.document.getElementById('content');
