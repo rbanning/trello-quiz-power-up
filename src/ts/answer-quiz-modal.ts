@@ -1,4 +1,4 @@
-import { showdown } from "showdown";
+import * as Showdown from "showdown";
 
 import { LoadingService } from "./loading.service";
 import { env, trello } from "./_common";
@@ -25,8 +25,8 @@ t.render(() => {
     return el?.outerHTML;
   };
 
-  console.log("DEBUG: showdown", {showdown});
-  //const mdConverter = new showdown.Converter();
+  console.log("DEBUG: Showdown", {Showdown});
+  //const mdConverter = new Showdown.Converter();
   const markdownToHtml = (md: string): string => {
     return md;
     //return mdConverter.makeHtml(md);
@@ -71,8 +71,6 @@ t.render(() => {
       const content = window.document.getElementById('content');
 
       if (question?.isValid) {
-        content.innerHTML = `<div class="error"><strong>Oops!</strong> This appears to be an invalid question!</div>`;
-      } else {
         //prepare content HTML
         content.innerHTML = `<div class="question">${markdownToHtml(question.text)}</div>`
           + `<div class="answers">${question.answers.map(answerButton).join(' ')}</div>`;
@@ -87,6 +85,8 @@ t.render(() => {
               target.innerHTML = iconHtml(question.checkAnswer(id)) + target.innerHTML;
             });
           });
+      } else {
+        content.innerHTML = `<div class="error"><strong>Oops!</strong> This appears to be an invalid question!</div>`;
       }
       
     })
