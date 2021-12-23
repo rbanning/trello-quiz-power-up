@@ -46,7 +46,7 @@ export class Question implements IQuestion {
     const parts = text.split(QuestionAnswerSeparator);
     if (parts.length >= 2) {
       const result = {
-        text: parts.slice(0, parts.length - 2).join(QuestionAnswerSeparator),  //answers are after the last separator so rejoin the text of the question
+        text: parts.slice(0, parts.length - 1).join(QuestionAnswerSeparator),  //answers are after the last separator so rejoin the text of the question
         answers: parts[parts.length - 1].split('\n').filter(m => m && m.trim().length > 0)
             .map((answer: string, index: number) => {
               return {
