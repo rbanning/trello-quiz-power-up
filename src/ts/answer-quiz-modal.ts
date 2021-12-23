@@ -25,9 +25,11 @@ t.render(() => {
     return el?.outerHTML;
   };
 
-  const mdConverter = new showdown.Converter();
+  console.log("DEBUG: showdown", {showdown});
+  //const mdConverter = new showdown.Converter();
   const markdownToHtml = (md: string): string => {
-    return mdConverter.makeHtml(md);
+    return md;
+    //return mdConverter.makeHtml(md);
   };
 
   const answerButton = (answer: IAnswer): string => {
