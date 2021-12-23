@@ -39,6 +39,15 @@ t.render(() => {
   const answerButton = (answer: IAnswer): string => {
     return `<div class="answer" id="${answer.id}">${markdownToHtml(answer.text)}</div>`;
   }
+
+  const preloadIcons = () => {
+    const ok = new Image();
+    ok.src = env.icon.correct;
+    ok.onload = () => { console.log("DEBUG: Correct icon loaded"); }
+    const wrong = new Image();
+    wrong.src = env.icon.incorrect;
+    wrong.onload = () => { console.log("DEBUG: Incorrect icon loaded"); }
+  }
   
   const iconHtml = (correct: boolean) => {    
     return `<img class="icon-mark" src="${correct ? env.icon.correct : env.icon.incorrect}" alt="${correct ? 'CORRECT' : 'INCORRECT'}" />`;
@@ -56,6 +65,9 @@ t.render(() => {
     .forEach(btn => {
       btn.addEventListener('click', close);
     });
+
+  //Preload images
+  preloadIcons();
 
   
   //GET ALL OF THE INFORMATION
