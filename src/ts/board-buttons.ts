@@ -19,7 +19,7 @@ export namespace BoardButtons {
           console.warn("Unable to retrieve settings", {settings});
           return [];
         }
-        if (scoreService) {
+        if (!scoreService) {
           console.warn("Unable to retrieve score service", {scoreService});
           return [];
         }
