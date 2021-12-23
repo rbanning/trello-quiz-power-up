@@ -8,6 +8,8 @@ export type ScoreSheet = { [key: string]: IScore[]}
 
 export class ScoringService {
   private readonly KEY = "quiz-score-sheet";
+  private readonly VISIBILITY = "shared";
+
   private _scoreSheet: ScoreSheet;
   get scoreSheet() {
     return {...this._scoreSheet};
@@ -19,7 +21,7 @@ export class ScoringService {
 
   load(t: any) {
     return new trello.Promise((resolve, reject) => {
-      t.get('board', 'shared', this.KEY)
+      t.get('board', this.VISIBILITY, this.KEY)
         .then((data) => {
           this._scoreSheet = data || {};
           resolve(this);
@@ -58,7 +60,7 @@ export class ScoringService {
 
   save(t): Promise<ScoreSheet> {
     return new trello.Promise((resolve, reject) => {
-      t.set('board', 'shared', this.KEY, this._scoreSheet)
+      t.set('board', this.VISIBILITY, this.KEY, this._scoreSheet)
         .then(_ => resolve(this));
     });
   }

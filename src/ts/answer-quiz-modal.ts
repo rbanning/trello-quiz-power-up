@@ -130,10 +130,8 @@ t.render(() => {
 
               if (isCorrect) {
                 scoringService.saveScore(t, iScore);
-                window.setTimeout(() => {
-                  showFireworks(randomCorrectMessage());
-                  window.setTimeout(close, 5000);
-                }, 1000);  
+                showFireworks(randomCorrectMessage());
+                window.setTimeout(close, 5000);
               }
             });
           });
