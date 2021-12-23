@@ -25,11 +25,9 @@ t.render(() => {
     return el?.outerHTML;
   };
 
-  console.log("DEBUG: Showdown", {Showdown});
-  //const mdConverter = new Showdown.Converter();
+  const mdConverter = new Showdown.Converter();
   const markdownToHtml = (md: string): string => {
-    return md;
-    //return mdConverter.makeHtml(md);
+    return mdConverter.makeHtml(md);
   };
 
   const answerButton = (answer: IAnswer): string => {
@@ -37,13 +35,14 @@ t.render(() => {
   }
   
   const iconHtml = (correct: boolean) => {    
-    return `<img class="icon-mark" src="${correct ? env.icon.correct : env.icon.incorrect}" alt="${correct ? 'CORRECT' : 'INCORRECT'} />`;
+    return `<img class="icon-mark" src="${correct ? env.icon.correct : env.icon.incorrect}" alt="${correct ? 'CORRECT' : 'INCORRECT'}" />`;
   };
 
-  const booleanHtml = (bool: string | boolean) => {    
-    if (typeof(bool) === 'string') { bool = bool.toLowerCase() === "true"; }
-  
-    return (bool === null || bool === undefined) ? '' : `<span class="bool">${(bool ? '(DONE)' : '(PENDING)')}</span>`;
+  const removeAllIcons = () => {    
+    window.document.querySelectorAll("img.icon-mark")
+      .forEach((element: Element) => {
+        element.remove();
+      });
   };
 
   //SETUP CLOSE BUTTON
@@ -79,6 +78,7 @@ t.render(() => {
         window.document.querySelectorAll(".answer")
           .forEach((el: Element) => {
             el.addEventListener('click', (e: MouseEvent) => {
+              removeAllIcons();
               const target: HTMLElement = e.target as HTMLElement;
               const id = target.dataset?.id;
               console.log("Checking Answer", {target, id, question, check: question.checkAnswer(id)});
