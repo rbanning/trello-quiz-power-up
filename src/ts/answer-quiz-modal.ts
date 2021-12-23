@@ -75,9 +75,8 @@ t.render(() => {
 
   const getScoreObjectFor = (card: any, member: any): IScore => {
     return {
-      cardId: card.id,
-      cardName: card.name,
-      userName: member.fullName
+      card: card.id,
+      user: member.id
     };
   }
 
@@ -93,7 +92,7 @@ t.render(() => {
 
   //GET ALL OF THE INFORMATION
   const actions = [
-    t.member('id', 'fullName', 'username', 'avatar'),
+    t.member('id', 'fullName', 'username'),
     t.card('id', 'name', 'desc'),
     ScoringService.Init(t)
   ];

@@ -1,9 +1,8 @@
 import { trello } from "./_common";
 
 export interface IScore {
-  cardId: string;
-  cardName: string;
-  userName: string;
+  card: string;
+  user: string;
 }
 export type ScoreSheet = { [key: string]: IScore[]}
 
@@ -29,8 +28,8 @@ export class ScoringService {
   }
 
   exists(score: IScore): boolean {
-    if (Array.isArray(this._scoreSheet[score?.cardId])) {
-      return this._scoreSheet[score.cardId].some(m => m.userName === score.userName);
+    if (Array.isArray(this._scoreSheet[score?.card])) {
+      return this._scoreSheet[score.card].some(m => m.user === score.user);
     } 
 
     //else
@@ -43,8 +42,8 @@ export class ScoringService {
     }
 
 
-    if (!Array.isArray(this._scoreSheet[score.cardId])) {
-      this._scoreSheet[score.cardId] = [];
+    if (!Array.isArray(this._scoreSheet[score.card])) {
+      this._scoreSheet[score.card] = [];
     } 
 
     //does the score already exist?
@@ -53,7 +52,7 @@ export class ScoringService {
     }
 
     //else set the score and save
-    this._scoreSheet[score.cardId].push(score);
+    this._scoreSheet[score.card].push(score);
     return this.save(t);
 }
 
