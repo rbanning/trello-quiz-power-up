@@ -105,8 +105,6 @@ t.render(() => {
       const question: IQuestion = Question.Parse(card.desc);
       const iScore: IScore = getScoreObjectFor(card, member);
 
-      console.log("DEBUG: quiz answer details", {member, card, question, iScore});
-
       //get content element
       const content = window.document.getElementById('content');
 
@@ -128,14 +126,13 @@ t.render(() => {
               const id = el.getAttribute('id');
               const isCorrect = question.checkAnswer(id);
 
-              console.log("DEBUG: Checking Answer", {el, id, question, isCorrect});
               el.innerHTML = iconHtml(isCorrect) + el.innerHTML;
 
               if (isCorrect) {
                 scoringService.saveScore(t, iScore);
                 window.setTimeout(() => {
                   showFireworks(randomCorrectMessage());
-                  //window.setTimeout(close, 5000);
+                  window.setTimeout(close, 5000);
                 }, 1000);  
               }
             });
