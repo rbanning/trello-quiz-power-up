@@ -11,10 +11,25 @@ const loading = new LoadingService();
 loading.show();
 
 
-const showFireworks = () => {
+const close = () => {
+  trello.t().closeModal();
+};
+
+const correctMessages = ["Well Done!", "You're Correct!", "Right On!", "Good Answer!", "So Smart!"];
+const randomCorrectMessage = () => {
+  return correctMessages[Math.floor(Math.random() * 100) % correctMessages.length];
+}
+
+const showFireworks = (message: string = null) => {
   const backdrop = window.document.getElementById("backdrop");
   backdrop.classList.add("show");
   Fireworks.load();
+  if (message) {
+    const el = window.document.createElement("div");
+    el.classList.add("message");
+    el.innerHTML = message;
+    backdrop.append(el);
+  }
 }
 
 t.render(() => {
@@ -22,9 +37,6 @@ t.render(() => {
 
 
   //HELPERS
-  const close = () => {
-    trello.t().closeModal();
-  };
 
   const memberHtml = (member: any) => {
     const el = MemberComponent.build(member);
@@ -69,7 +81,7 @@ t.render(() => {
   //Preload images
   preloadIcons();
 
-  
+
   //GET ALL OF THE INFORMATION
   const actions = [
     t.member('id', 'fullName', 'username', 'avatar'),
@@ -101,8 +113,9 @@ t.render(() => {
               console.log("DEBUG: Checking Answer", {el, id, question, check: question.checkAnswer(id)});
               el.innerHTML = iconHtml(question.checkAnswer(id)) + el.innerHTML;
               window.setTimeout(() => {
-                showFireworks();
-              }, 5000);
+                showFireworks(randomCorrectMessage());
+                window.setTimeout(close, 5000);
+              }, 1000);
             });
           });
       } else {
