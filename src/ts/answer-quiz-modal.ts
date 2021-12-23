@@ -31,7 +31,7 @@ t.render(() => {
   };
 
   const answerButton = (answer: IAnswer): string => {
-    return `<div class="answer" data-id="${answer.id}">${markdownToHtml(answer.text)}</div>`;
+    return `<div class="answer" id="${answer.id}">${markdownToHtml(answer.text)}</div>`;
   }
   
   const iconHtml = (correct: boolean) => {    
@@ -80,8 +80,8 @@ t.render(() => {
             el.addEventListener('click', (e: MouseEvent) => {
               removeAllIcons();
               const target: HTMLElement = e.target as HTMLElement;
-              const id = target.dataset?.id;
-              console.log("Checking Answer", {target, id, question, check: question.checkAnswer(id)});
+              const id = target.getAttribute('id');
+              console.log("DEBUG: Checking Answer", {e, target, id, question, check: question.checkAnswer(id)});
               target.innerHTML = iconHtml(question.checkAnswer(id)) + target.innerHTML;
             });
           });
