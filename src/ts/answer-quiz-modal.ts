@@ -5,6 +5,7 @@ import { env, trello } from "./_common";
 import { MemberComponent } from "./member.component";
 import { IAnswer, IQuestion, Question } from "./quiz.model";
 import { Fireworks } from "./fireworks";
+import { IScore, ScoringService } from "./scoring.service";
 
 const t = trello.t();
 const loading = new LoadingService();
@@ -72,6 +73,14 @@ t.render(() => {
       });
   };
 
+  const getScoreObjectFor = (card: any, member: any): IScore => {
+    return {
+      cardId: card.id,
+      cardName: card.name,
+      userName: member.fullName
+    };
+  }
+
   //SETUP CLOSE BUTTON
   window.document.querySelectorAll('.close')
     .forEach(btn => {
@@ -85,16 +94,19 @@ t.render(() => {
   //GET ALL OF THE INFORMATION
   const actions = [
     t.member('id', 'fullName', 'username', 'avatar'),
-    t.card('id', 'name', 'desc')
+    t.card('id', 'name', 'desc'),
+    ScoringService.Init(t)
   ];
   trello.Promise.all(actions)
-    .then(([member, card]) => {
+    .then(([member, card, scoringService]: [any, any, ScoringService]) => {
       //subtitle
       const subtitle = window.document.getElementById('subtitle');
       subtitle.innerHTML = card.name;
 
       const question: IQuestion = Question.Parse(card.desc);
-      console.log("DEBUG: quiz answer details", {member, card, question});
+      const iScore: IScore = getScoreObjectFor(card, member);
+
+      console.log("DEBUG: quiz answer details", {member, card, question, iScore});
 
       //get content element
       const content = window.document.getElementById('content');
@@ -103,6 +115,11 @@ t.render(() => {
         //prepare content HTML
         content.innerHTML = `<div class="question">${markdownToHtml(question.text)}</div>`
           + `<div class="answers">${question.answers.map(answerButton).join(' ')}</div>`;
+
+        if (scoringService.exists(iScore)) {
+          content.innerHTML += `<div class="warning">You have already answered this question successfully<div>`;
+        }
+
 
         //setup answer handlers
         window.document.querySelectorAll(".answer")
@@ -116,6 +133,7 @@ t.render(() => {
               el.innerHTML = iconHtml(isCorrect) + el.innerHTML;
 
               if (isCorrect) {
+                scoringService.saveScore(t, iScore);
                 window.setTimeout(() => {
                   showFireworks(randomCorrectMessage());
                   //window.setTimeout(close, 5000);
