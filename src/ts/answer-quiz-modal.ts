@@ -117,7 +117,7 @@ t.render(() => {
           + `<div class="answers">${question.answers.map(answerButton).join(' ')}</div>`;
 
         if (scoringService.exists(iScore)) {
-          content.innerHTML += `<div class="warning">You have already answered this question successfully<div>`;
+          content.innerHTML += `<div class="announcement">You have answered this question successfully<div>`;
         }
 
 
