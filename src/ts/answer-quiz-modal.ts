@@ -110,12 +110,17 @@ t.render(() => {
             el.addEventListener('click', (e: PointerEvent) => {
               removeAllIcons();
               const id = el.getAttribute('id');
-              console.log("DEBUG: Checking Answer", {el, id, question, check: question.checkAnswer(id)});
-              el.innerHTML = iconHtml(question.checkAnswer(id)) + el.innerHTML;
-              window.setTimeout(() => {
-                showFireworks(randomCorrectMessage());
-                window.setTimeout(close, 5000);
-              }, 1000);
+              const isCorrect = question.checkAnswer(id);
+
+              console.log("DEBUG: Checking Answer", {el, id, question, isCorrect});
+              el.innerHTML = iconHtml(isCorrect) + el.innerHTML;
+
+              if (isCorrect) {
+                window.setTimeout(() => {
+                  showFireworks(randomCorrectMessage());
+                  //window.setTimeout(close, 5000);
+                }, 1000);  
+              }
             });
           });
       } else {
