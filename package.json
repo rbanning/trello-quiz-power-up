@@ -15,7 +15,8 @@
   "dependencies": {
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-interpolate-env": "^0.0.1",
-    "parcel-plugin-static-files-copy": "^2.5.1"
+    "parcel-plugin-static-files-copy": "^2.5.1",
+    "showdown": "^1.9.1"
   },
   "devDependencies": {
     "tslint": "^6.1.3",

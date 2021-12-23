@@ -25,6 +25,11 @@ export const env = {
     gray: '%%APP_URL%%/icon-gray.png',
     white: '%%APP_URL%%/icon-white.png',
     black: '%%APP_URL%%/icon-black.png'
+  },
+  
+  icon: {
+    correct: '%%APP_URL%%/correct.png',
+    incorrect: '%%APP_URL%%/incorrect.png'
   }
 };
 

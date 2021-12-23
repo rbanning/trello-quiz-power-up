@@ -40,6 +40,33 @@
       section {
         margin: 1em 0;
       }
+
+      .question {
+        margin: 1em 0;
+      }
+      .answers {
+        border-top: solid 2px gray;
+        padding: 1em 0;
+      }
+
+      .answer {
+        border: solid 1px steelblue;
+        padding: 0.4em 0.6em;
+        cursor: pointer;
+        transition: all 0.3s linear;
+      }
+      .answer:hover {
+        background-color: lightsteelblue;
+      }
+      .answer.disabled {
+        background: lightgrey;
+        cursor: not-allowed;
+      }
+
+      img.icon-mark {
+        display: inline-block;
+        margin-right: 1em;
+      }
     </style>
 </head>
 

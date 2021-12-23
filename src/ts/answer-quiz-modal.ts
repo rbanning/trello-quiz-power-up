@@ -1,8 +1,10 @@
+import { showdown } from "showdown";
+
 import { LoadingService } from "./loading.service";
-import { trello } from "./_common";
+import { env, trello } from "./_common";
 import { DateHelper } from "./date-helper";
 import { MemberComponent } from "./member.component";
-import { Question } from "./quiz.model";
+import { IAnswer, IQuestion, Question } from "./quiz.model";
 
 const t = trello.t();
 const loading = new LoadingService();
@@ -23,15 +25,17 @@ t.render(() => {
     return el?.outerHTML;
   };
 
-  const customFieldHtml = (cf: any) => {
-    if (!cf) { return null; }
-    const value = cf.value?.text || cf.value?.date || cf.value?.number || cf.value?.checked || `opt id: ${cf.idValue}`;
-    return `<span class="dark">${value}</span> <br/><code style="margin: 0 1em;">(field: ${cf.idCustomField})</code>`;
+  const mdConverter = new showdown.Converter();
+  const markdownToHtml = (md: string): string => {
+    return mdConverter.makeHtml(md);
   };
 
+  const answerButton = (answer: IAnswer): string => {
+    return `<div class="answer" data-id="${answer.id}">${markdownToHtml(answer.text)}</div>`;
+  }
   
-  const dateHtml = (d: string) => {    
-    return `<span class="date">${!!d ? DateHelper.dateMedium(new Date(d)) : 'none'}</span>`;
+  const iconHtml = (correct: boolean) => {    
+    return `<img class="icon-mark" src="${correct ? env.icon.correct : env.icon.incorrect}" alt="${correct ? 'CORRECT' : 'INCORRECT'} />`;
   };
 
   const booleanHtml = (bool: string | boolean) => {    
@@ -58,12 +62,30 @@ t.render(() => {
       const subtitle = window.document.getElementById('subtitle');
       subtitle.innerHTML = card.name;
 
-      const question = Question.Parse(card.desc);
+      const question: IQuestion = Question.Parse(card.desc);
       console.log("DEBUG: quiz answer details", {member, card, question});
 
       //get content element
       const content = window.document.getElementById('content');
 
+      if (question?.isValid) {
+        content.innerHTML = `<div class="error"><strong>Oops!</strong> This appears to be an invalid question!</div>`;
+      } else {
+        //prepare content HTML
+        content.innerHTML = `<div class="question">${markdownToHtml(question.text)}</div>`
+          + `<div class="answers">${question.answers.map(answerButton).join(' ')}</div>`;
+
+        //setup answer handlers
+        window.document.querySelectorAll(".answer")
+          .forEach((el: Element) => {
+            el.addEventListener('click', (e: MouseEvent) => {
+              const target: HTMLElement = e.target as HTMLElement;
+              const id = target.dataset?.id;
+              console.log("Checking Answer", {target, id, question, check: question.checkAnswer(id)});
+              target.innerHTML = iconHtml(question.checkAnswer(id)) + target.innerHTML;
+            });
+          });
+      }
       
     })
     .then(() => {
