@@ -77,11 +77,12 @@ t.render(() => {
         //setup answer handlers
         window.document.querySelectorAll(".answer")
           .forEach((el: Element) => {
-            el.addEventListener('click', (e: MouseEvent) => {
+            el.addEventListener('click', (e: PointerEvent) => {
               removeAllIcons();
+              const me = this;
               const target: HTMLElement = e.target as HTMLElement;
               const id = target.getAttribute('id');
-              console.log("DEBUG: Checking Answer", {e, target, id, question, check: question.checkAnswer(id)});
+              console.log("DEBUG: Checking Answer", {me, e, target, id, question, check: question.checkAnswer(id)});
               target.innerHTML = iconHtml(question.checkAnswer(id)) + target.innerHTML;
             });
           });

@@ -50,7 +50,7 @@ export class Question implements IQuestion {
         answers: parts[parts.length - 1].split('\n').filter(m => m && m.trim().length > 0)
             .map((answer: string, index: number) => {
               return {
-                id: `${index}-${answer.substring(0,5).toLocaleLowerCase()}`,
+                id: `${index}-${answer.replace(" ", "").substring(0,5).toLocaleLowerCase()}`,
                 text: answer,
                 isCorrect: answer.includes(CorrectAnswerIndicator)
               }
