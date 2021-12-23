@@ -29,6 +29,11 @@ export class ScoringService {
     })
   }
 
+  myAnswers(user: string): string[] {
+    return Object.keys(this._scoreSheet)
+      .filter(key => this._scoreSheet[key].some(m => m.user === user));
+  }
+
   exists(score: IScore): boolean {
     if (Array.isArray(this._scoreSheet[score?.card])) {
       return this._scoreSheet[score.card].some(m => m.user === score.user);

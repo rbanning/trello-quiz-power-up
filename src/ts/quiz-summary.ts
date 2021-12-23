@@ -61,16 +61,14 @@ t.render(() => {
         }
       }).filter(m => !!m.question);
 
-      console.log("DEBUG: Actions results", {member, cards, scoringService, questions});
-
       //subtitle
       const subtitle = window.document.getElementById('subtitle');
       subtitle.innerHTML = `${questions.length} Questions`;
 
       //get content element
       const content = window.document.getElementById('content');
-
-      content.innerHTML = questions.map(q => {
+      const summary = `<h3>You have answered ${scoringService.myAnswers(member.id).length} of ${questions.length} question(s)<h3>`;
+      content.innerHTML = summary + questions.map(q => {
         const scores = scoringService.scoreSheet[q.card.id] || [];
         const answered = scores.some(m => m.user === member.id);
         return `<div class="item"><strong>${q.card.name}</strong><br/>${scores.length} answered correctly`

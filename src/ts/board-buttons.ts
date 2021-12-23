@@ -24,6 +24,7 @@ export namespace BoardButtons {
           return [];
         }
   
+        console.log("DEBUG: BoardButtons - done");
         return {
           text: 'Quiz Summary',
           callback: (t) => {
