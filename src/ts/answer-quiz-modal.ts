@@ -2,14 +2,20 @@ import * as Showdown from "showdown";
 
 import { LoadingService } from "./loading.service";
 import { env, trello } from "./_common";
-import { DateHelper } from "./date-helper";
 import { MemberComponent } from "./member.component";
 import { IAnswer, IQuestion, Question } from "./quiz.model";
+import { Fireworks } from "./fireworks";
 
 const t = trello.t();
 const loading = new LoadingService();
 loading.show();
 
+
+const showFireworks = () => {
+  const backdrop = window.document.getElementById("backdrop");
+  backdrop.classList.add("show");
+  Fireworks.load();
+}
 
 t.render(() => {
 
@@ -82,6 +88,9 @@ t.render(() => {
               const id = el.getAttribute('id');
               console.log("DEBUG: Checking Answer", {el, id, question, check: question.checkAnswer(id)});
               el.innerHTML = iconHtml(question.checkAnswer(id)) + el.innerHTML;
+              window.setTimeout(() => {
+                showFireworks();
+              }, 5000);
             });
           });
       } else {
