@@ -1,3 +1,4 @@
+import { Question } from "./quiz.model";
 import { ISettings, SettingsService } from "./settings.service";
 import { env, trello } from "./_common";
 
@@ -35,14 +36,19 @@ export namespace CardDetailBadge {
           return [];
         }
 
-        const result = [
-          {
-            title: settings.quiz_name || 'Untitled Quiz',
-            text: 'Answer Question',
-            color: 'sky',
-            callback: showQuizAnswerPromptModal
-          }
-        ];
+        const result = [];
+
+        const q = Question.Parse(card.desc);
+        if (q?.isValid) {
+          result.push(
+            {
+              title: settings.quiz_name || 'Untitled Quiz',
+              text: 'Answer Question',
+              color: 'sky',
+              callback: showQuizAnswerPromptModal
+            }
+          );
+        };
 
         return result;
     });
