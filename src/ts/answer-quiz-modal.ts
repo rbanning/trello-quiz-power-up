@@ -79,11 +79,9 @@ t.render(() => {
           .forEach((el: Element) => {
             el.addEventListener('click', (e: PointerEvent) => {
               removeAllIcons();
-              const me = this;
-              const target: HTMLElement = e.target as HTMLElement;
-              const id = target.getAttribute('id');
-              console.log("DEBUG: Checking Answer", {me, e, target, id, question, check: question.checkAnswer(id)});
-              target.innerHTML = iconHtml(question.checkAnswer(id)) + target.innerHTML;
+              const id = el.getAttribute('id');
+              console.log("DEBUG: Checking Answer", {el, id, question, check: question.checkAnswer(id)});
+              el.innerHTML = iconHtml(question.checkAnswer(id)) + el.innerHTML;
             });
           });
       } else {
