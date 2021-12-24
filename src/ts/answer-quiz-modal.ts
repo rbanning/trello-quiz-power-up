@@ -129,7 +129,9 @@ t.render(() => {
               el.innerHTML = iconHtml(isCorrect) + el.innerHTML;
 
               if (isCorrect) {
-                scoringService.saveScore(t, iScore);
+                if (iScore.user) {
+                  scoringService.saveScore(t, iScore);
+                }
                 showFireworks(randomCorrectMessage());
                 window.setTimeout(close, 5000);
               }
